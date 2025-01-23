@@ -1,12 +1,36 @@
 <div class="todo-container">
-    <h2>To-Do List</h2>
-    <mat-form-field appearance="fill">
-      <mat-label>New Task</mat-label>
-      <input matInput [(ngModel)]="newTodo" />
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="addTodo()">Add</button>
-    <ul>
-      <li *ngFor="let todo of todos">{{ todo }}</li>
-    </ul>
-  </div>
-  
+  <h2>To-Do List</h2>
+
+  <!-- Add New Task -->
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>New Task</mat-label>
+    <input matInput [(ngModel)]="newTodo" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="addTodo()">Add Task</button>
+
+  <!-- List of Tasks -->
+  <ul>
+    <li *ngFor="let todo of todos; let i = index" class="todo-item">
+      <!-- Editable Input Field -->
+      <div *ngIf="todo.isEditing; else displayTask">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Edit Task</mat-label>
+          <input matInput [(ngModel)]="todo.text" />
+        </mat-form-field>
+        <button mat-button color="primary" (click)="saveTodo(i)">Save</button>
+        <button mat-button color="warn" (click)="cancelEdit(i)">Cancel</button>
+      </div>
+
+      <!-- Display Task -->
+      <ng-template #displayTask>
+        <span>{{ todo.text }}</span>
+        <button mat-icon-button color="primary" (click)="editTodo(i)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="removeTodo(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </ng-template>
+    </li>
+  </ul>
+</div>
